@@ -1,0 +1,177 @@
+1.在 src/main 目录下创建scala 目录
+2.配置创建Scala类
+    File ==》Project Structure ==》Modules ==> 选中 src/main/scala 目录 点击 sources ==》 ok
+  导入 Scala SDK
+     File ==》Project Structure ==》 Libraries ==> 点击绿色 加号 选择 Scala SDK  ===》 选中需要的 SDK 版本  ==》 OK
+
+3.scala main方法必须创建在 object（静态类） 类里面
+
+ object Test0{
+   def main(args: Array[String]): Unit = {
+     val a = "122"
+     print(a)
+   }
+ }
+
+ 4.变量声明 (结尾剋以不带分号)
+    val（推荐使用） ：变量的引用不可变，引用对象的内容可以改变，相当于Java final 修饰的变量
+    var（重复赋值） ：
+    指定变量类型：
+        val a: INT = 123
+
+5.  1到10
+    1 to 10 ：包含 10  等价于 1.to(10)
+    1 until 10 ： 不包含 10
+6. for 循环
+    for(i <- 1 to 10)
+    {
+        print(i)
+    }
+    嵌套for 循环
+        for(i <- 1 to 10 ; j <- 1 to 10 if(i != j)) print(i * 10 + l)
+    把循环结果赋给变量 (yield 把每次迭代生成的值放到集合中)
+        val res = for(i <- 1 to 10) yield i
+
+ 7.方法声明
+    def 方法名（参数： 参数类型，参数： 参数类型） ： 返会类型 = {方法体}
+ 8.函数声明
+    有变量接收属于普通函数，无属于匿名函数
+    val res =（参数： 参数类型，参数： 参数类型） =》 {函数体}
+    ss: (Int, Int) => Int = <function2> ===》 function后面的2 代表函数有几个参数
+ 9.方法转换成函数
+    val 函数名 = 方法名 _
+    scala 会隐士把方法转换成函数
+ 10.函数可以当成参数传到方法中
+     def f(a: Int,b: Int) : Int = {a+b}
+     def aa(f: (Int,Int) => Int) = f(2,3)
+     val f1 = (a: Int,b: Int) => a+b
+     aa(f1)
+
+ 11.数组
+         //定长 使用数组缓冲输出
+         var arr = new Array[String](5)
+         println(arr.toBuffer)
+         //不用 new 关键字
+         val arr2 = Array("java","scala","pythom")
+         print(arr2.toBuffer)
+         //取值 使用小括号
+         println(arr2(1))
+         //变长数组  需要导入包 scala.collection.mutable.ArrayBuffer
+         val arr4 = new ArrayBuffer[Int]()
+         println(arr4 += 1)
+         val arr3 = ArrayBuffer(56,89)
+         //追加数组 使用 ++= 追加元素使用 +=
+         arr3 ++= ArrayBuffer(12,23)
+         arr3 ++= arr4
+         print(arr3.toBuffer)
+         //追加多个元素 使用元祖
+         arr4 += (999,999)
+         print(arr4.toBuffer)
+         // 插入元素 在第一个元素之前添加 11和11
+         arr4.insert(0,11,11)
+         print(arr4.toBuffer)
+         //删除元素 从哪个下标开始删，删除几个
+         arr4.remove(1,3)
+         //arr4.remove(2)
+         print(arr4.toBuffer)
+         //遍历数组
+         for (i <- arr4 ) println(i)
+         for (i <- 0 until arr4.length) println(arr4(i))
+         //反转输出
+         for (i <- (0 until arr4.length).reverse) println(arr4(i))
+         //转换存储到一个新的数组中
+         val res = for(i <- arr4) yield i * 10
+         println(res.toBuffer)
+         val d =Array(2,4,1,6,8,0,9)
+         //求和
+         println(d.sum)
+         //最大值
+         println(d.min)
+         //排序
+         println(d.sorted.toBuffer.reverse)
+
+ 12.映射
+      val ma = Map("scala" -> 1,"java" -> 2,"python" ->3)
+      println(ma.get("scala"))
+      val ma2 = Map(("scala",1),("java",2),("python",3))
+      println(ma2("java"))
+      //修改值，需要引入 mutable 包，数组，元祖，map等默认值是不可以修改的
+      ma2("java") = 4
+      println(ma2("java"))
+      //获取的值不存在显示默认的
+      println(ma2.getOrElse("c+",-1))
+
+ 13.元组 多个值，多种类型,从1开始取值
+        val t = (1,"java","python",("c+",99))
+        println(t._4._1)
+        val tt,(a,b,c,d) = (1,"java","python",("c+",99))
+        println(d._1)
+        //数组转换成map映射
+        val aa = Array(("java",1),("c+",2))
+        println(aa.toMap)
+
+        //拉链操作（zip）  合并两个数组，如果元素数量不一样以少的为主
+        val a1 = Array("java","c+")
+        val a2 = Array(1,20,99)
+        println((a1 zip a2).toBuffer)
+ 14. 集合
+        // seq（序列） set（集） map（映射）
+        //seq 不可变
+        val list1 = List(1,2,3)
+        val list2 = List(4,5,6)
+        // list1前追加一个元素
+        val list3 = 9 :: list1
+        val list4 = 9 +: list1
+        println(list4)
+        // list1后追加一个元素
+        val list5 = list1 :+ 0
+        println(list5)
+      //合并list
+        val list7 = list1 ++ list2
+        val list8 = list1 ::: list2
+        print(list7)
+        //seq 可变
+        val l1 = ListBuffer(1,2,3)
+        //添加
+        print(l1 += 0)
+        l1.append(12)
+        println(l1)
+        val l2 = ListBuffer(6,7,8)
+        //追加到l1
+        l1 ++= l2
+        println(l1)
+        //生成一个新的list
+       val l3 = l1 ++ l2
+        val l4 = l1 ：+ l2
+        println(l3)
+
+       //set 不可变
+       import scala.collection.immutable.HashSet
+           val set1 = HashSet[Int]()
+           //添加元素
+           println(set1 + 12)
+           //添加set 生成一个新的set
+           val set3 = set1 + 3 ++ Set(55,99)
+           println(set3)
+
+        //set 可变
+            val set1 = new mutable.HashSet[Int]()
+            set1 += 2
+            set1.add(12)
+            println(set1)
+
+            set1 ++= Set(4,6,7)
+            println(set1)
+            //删除
+            set1.remove(1)
+            set1 -= 2
+
+        // map
+          val map1 = new mutable.HashMap[String,Int]()
+              map1("java") = 1
+              map1 += (("c+",2))
+              map1.put("scala",3)
+              println(map1)
+              map1.remove("java")
+              map1 -= (("c+"))
+              println(map1)
